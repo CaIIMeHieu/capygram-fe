@@ -1,0 +1,23 @@
+{
+  "editProfile": "Edit Profile",
+  "viewArchive": "View Archive",
+  "posts": "posts",
+  "followers": "followers",
+  "following": "following",
+  "note": "Note...",
+  "new": "New",
+  "post": "POST",
+  "saved": "SAVED",
+  "tagged": "TAGGED",
+  "message": "Message",
+  "addCloseFriends": "Add to close friends list",
+  "addFavorites": "Add to favorites",
+  "mute": "Mute",
+  "restrict": "Restrict",
+  "unfollow": "Unfollow",
+  "block": "Block",
+  "report": "Report",
+  "shareTo": "Share to...",
+  "aboutAccount": "About this account",
+  "cancel": "Cancel"
+}
