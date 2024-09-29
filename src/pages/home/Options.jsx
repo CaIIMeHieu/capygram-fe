@@ -7,7 +7,7 @@ const Options = ({ oncancel }) => {
             <div className="options-list"><p>Đi đến bài viết</p></div>
             <div className="options-list"><p>Chia sẻ lên...</p></div>
             <div className="options-list"><p>Sao chép liên kết</p></div>
-            <div className="options-list"><p>nhúng</p></div>
+            <div className="options-list"><p>Nhúng</p></div>
             <div className="options-list"><p>Giới thiệu về tài khoản này</p></div>
             <div className="options-list" style={{ borderBottom: '0' }}><p onClick={oncancel}>Hủy</p></div>
         </div>

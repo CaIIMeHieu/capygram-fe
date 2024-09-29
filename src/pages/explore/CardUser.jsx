@@ -68,8 +68,8 @@ const CardUser = ({ user, Follow, setIsRender, isRender, handleClickFollow }) =>
   return (
     <div className='container'>
       <div className='info'>
-        <img style={{ cursor: 'pointer' }} src={user.profile.avatarUrl !== ('string' && '') ? user.profile.avatarUrl : account} alt='avata' />
-        <p style={{ cursor: 'pointer' }}><b>{user.userName}</b></p>
+        <img style={{ cursor: 'pointer' }} src={user?.profile.avatarUrl !== ('string' && '') ? user.profile.avatarUrl : account} alt='avata' />
+        <p style={{ cursor: 'pointer' }}><b>{user?.userName}</b></p>
       </div>
 
       <div className='count'>

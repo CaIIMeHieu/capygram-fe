@@ -2,7 +2,7 @@
 import { getMessages } from "@/api/authApi/chat";
 import { HubConnectionBuilder } from "@microsoft/signalr";
 import { useEffect, useState } from "react";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 export const useChat = ({ currentChat, currentUser }) => {
   const [hubConnection, setHubConnection] = useState(null);
@@ -16,16 +16,14 @@ export const useChat = ({ currentChat, currentUser }) => {
       try {
         const receivedMessages = await getMessages(currentUser.id);
         if (receivedMessages) {
-          const listReceivedMessages = receivedMessages.map(msg => ({
+          const listReceivedMessages = receivedMessages.map((msg) => ({
             ...msg,
-            type: msg.receiver === currentUser.id ? 'received' : 'sent',
+            type: msg.receiver === currentUser.id ? "received" : "sent",
           }));
           setMessages(listReceivedMessages);
 
           console.log("fetchMessage", listReceivedMessages);
-
         }
-
       } catch (error) {
         console.log(error);
       }
@@ -38,97 +36,98 @@ export const useChat = ({ currentChat, currentUser }) => {
       .withAutomaticReconnect()
       .build();
 
-    connection.start()
+    connection
+      .start()
       .then(() => {
-        connection.invoke('PublishUserOnConnect',
-          currentUser.id,
-          currentUser.fullname,
-          // loggedInUser.avatarUrl
-        )
-          .then(() => console.log('User connected'))
-          .catch(e => console.log('PublishUserOnConnect failed: ', e));
+        connection
+          .invoke(
+            "PublishUserOnConnect",
+            currentUser.id,
+            currentUser.fullname
+            // loggedInUser.avatarUrl
+          )
+          .then(() => console.log("User connected"))
+          .catch((e) => console.log("PublishUserOnConnect failed: ", e));
 
-        connection.on('BroadcastUserOnConnect', (users) => {
+        connection.on("BroadcastUserOnConnect", (users) => {
           setConnectedUsers(users);
           makeItOnline(users);
         });
 
-        connection.on('BroadcastUserOnDisconnect', (users) => {
+        connection.on("BroadcastUserOnDisconnect", (users) => {
           setConnectedUsers(users);
-          setUsers(prevUsers =>
-            prevUsers.map(user => ({ ...user, isOnline: false }))
+          setUsers((prevUsers) =>
+            prevUsers.map((user) => ({ ...user, isOnline: false }))
           );
           makeItOnline(users);
         });
 
-        connection.on('BroadCastDeleteMessage', (message) => {
-          setMessages(prevMessages => {
+        connection.on("BroadCastDeleteMessage", (message) => {
+          setMessages((prevMessages) => {
             const updatedMessages = [...prevMessages];
-            const deletedMessage = updatedMessages.find(m => m.id === message.id);
+            const deletedMessage = updatedMessages.find(
+              (m) => m.id === message.id
+            );
             if (deletedMessage) {
-              deletedMessage.IsReCeiverDeleted = message.IsReCeiverDeleted;
-              deletedMessage.isSenderDeleted = message.isSenderDeleted;
-              if (deletedMessage.IsReCeiverDeleted && (
-                deletedMessage.receiver = currentUser.id ||
-                deletedMessage.sender === currentUser.id
-              )) {
-                setDisplayMessages(
-                  updatedMessages.filter(m => m.id !== message.id)
-                );
-              }
+              updatedMessages.forEach( (item) => {
+                if(item.id == message.id) 
+                {
+                  console.log(message);
+                  item.isReceiverDeleted = message.isReceiverDeleted ;
+                  item.isSenderDeleted = message.isSenderDeleted ;
+                }
+              } )
             }
             return updatedMessages;
           });
         });
 
-        connection.on('ReceiveDM', message => {
-          message.type = 'received';
+        connection.on("ReceiveDM", (message) => {
+          message.type = "received";
           console.log("ReceiveDM", message);
-          setMessages(prevMessages => {
+          setMessages((prevMessages) => {
             const updatedMessages = [...prevMessages, message];
             if (currentChat) {
               setDisplayMessages(
                 updatedMessages.filter(
-                  m =>
-                    (m.type === 'sent' && m.receiver === currentChat.id) ||
-                    (m.type === 'received' && m.sender === currentChat.id)
+                  (m) =>
+                    (m.type === "sent" && m.receiver === currentChat.id) ||
+                    (m.type === "received" && m.sender === currentChat.id)
                 )
               );
             }
             return updatedMessages;
           });
 
-          setUsers(prevUsers => {
-            const currentUser = prevUsers.find(user => user.id === message.sender);
-            return prevUsers.map(user => ({
+          setUsers((prevUsers) => {
+            const currentUser = prevUsers.find(
+              (user) => user.id === message.sender
+            );
+            return prevUsers.map((user) => ({
               ...user,
               isActive: user.id === currentUser.id,
             }));
           });
         });
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
 
     setHubConnection(connection);
 
-
-
     return () => {
       connection.stop();
     };
-
-
   }, [currentUser]);
 
   useEffect(() => {
     if (currentChat) {
       setDisplayMessages(
         messages.filter(
-          m =>
-          ((m.type === 'sent' && m.receiver === currentChat.id) ||
-            (m.type === 'received' && m.sender === currentChat.id))
+          (m) =>
+            (m.type === "sent" && m.receiver === currentChat.id) ||
+            (m.type === "received" && m.sender === currentChat.id)
           // &&
           // m.IsReCeiverDeleted !== true &&
           // m.isSenderDeleted !== true
@@ -140,9 +139,9 @@ export const useChat = ({ currentChat, currentUser }) => {
 
   const makeItOnline = (userList) => {
     if (userList.length > 0) {
-      setUsers(prevUsers =>
-        prevUsers.map(user => {
-          const isOnline = userList.some(u => u.userId === user.id);
+      setUsers((prevUsers) =>
+        prevUsers.map((user) => {
+          const isOnline = userList.some((u) => u.userId === user.id);
           return { ...user, isOnline };
         })
       );
@@ -156,26 +155,26 @@ export const useChat = ({ currentChat, currentUser }) => {
         sender: currentUser.id,
         receiver: currentChat.id,
         createdAt: new Date().toISOString(),
-        type: 'sent',
+        type: "sent",
         content: messageContent,
       };
 
       // console.log("sendDirectMessage", msg);
 
-      setMessages(prevMessages => {
+      setMessages((prevMessages) => {
         const updatedMessages = [...prevMessages, msg];
         setDisplayMessages(
           updatedMessages.filter(
-            m =>
-              (m.type === 'sent' && m.receiver === currentChat.id) ||
-              (m.type === 'received' && m.sender === currentChat.id)
+            (m) =>
+              (m.type === "sent" && m.receiver === currentChat.id) ||
+              (m.type === "received" && m.sender === currentChat.id)
           )
         );
         return updatedMessages;
       });
 
       try {
-        await hubConnection.invoke('SendMessageToUser', msg);
+        await hubConnection.invoke("SendMessageToUser", msg);
         console.log("Message sent successfully");
       } catch (error) {
         console.log("Error sending message: ", error);
@@ -186,38 +185,38 @@ export const useChat = ({ currentChat, currentUser }) => {
   const deleteMessage = async (message, deleteType, isSender) => {
     const deleteMessage = {
       Type: deleteType,
-      message,
+      Message: message,
       UserRequest: currentUser.id,
     };
 
     try {
-      await hubConnection.invoke('DeleteMessageToUser', deleteMessage);
+      await hubConnection.invoke("DeleteMessageToUser", deleteMessage);
       console.log("Message deleted successfully");
     } catch (error) {
       console.log("Error deleting message: ", error);
     }
-
-    setMessages(prevMessages =>
-      prevMessages.map(msg =>
-        msg.id === message.id
-          ? { ...msg, isSenderDeleted: isSender, IsReCeiverDeleted: !isSender }
-          : msg
-      )
-    );
   };
 
   const onLogout = async () => {
     try {
-      await hubConnection.invoke('RemoveOnlineUser', currentUser.id);
-      setMessages(prevMessages => [
+      await hubConnection.invoke("RemoveOnlineUser", currentUser.id);
+      setMessages((prevMessages) => [
         ...prevMessages,
-        'User Disconnected Successfully',
+        "User Disconnected Successfully",
       ]);
-      localStorage.removeItem('accessToken');
+      localStorage.removeItem("accessToken");
     } catch (error) {
       console.log("Error logging out: ", error);
     }
   };
 
-  return { users, connectedUsers, messages, displayMessages, sendDirectMessage, deleteMessage, onLogout };
+  return {
+    users,
+    connectedUsers,
+    messages,
+    displayMessages,
+    sendDirectMessage,
+    deleteMessage,
+    onLogout,
+  };
 };
