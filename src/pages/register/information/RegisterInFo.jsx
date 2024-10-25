@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import "@/i18n";
 
@@ -15,7 +16,7 @@ import "./RegisterInFo.scss";
 
 const RegisterInFo = () => {
   const { t } = useTranslation('step1Register');
-
+  const navigate = useNavigate();
   const user = useSelector((state) => state.form.user);
   const dispatch = useDispatch();
 
@@ -41,7 +42,7 @@ const RegisterInFo = () => {
           >
             {({ handleSubmit, isSubmitting, touched, errors }) => (
               <Form onSubmit={handleSubmit}>
-                <img className='logo-capygram' src={logoCapyGram} />
+                <img style={{cursor:'pointer'}} className='logo-capygram' onClick={() => navigate("/")} src={logoCapyGram} alt="" />
                 <p className='sub-title'> {t('title')}</p>
 
                 <div className='form-field'>

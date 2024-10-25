@@ -70,6 +70,7 @@ const Contacts = ({ contacts, currentUser, changeChat }) => {
             </div>
             <div className='contacts'>
               {contacts.map((contact, index) => {
+                console.log(contact)
                 return (<div
                   className={`contact ${currentSelected === index ? 'selected' : ''}`}
                   key={index}

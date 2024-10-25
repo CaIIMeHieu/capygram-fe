@@ -39,6 +39,7 @@ const Step2 = () => {
       const userCreate = {
         UserName: user.username,
         UserId: user.id,
+        UserAvartar : user.avatarUrl
       }
 
       const postToCreate = {

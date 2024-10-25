@@ -23,6 +23,7 @@ import { SuggestionsProvider } from './pages/home/SuggestionsContext';
 import 'react-toastify/dist/ReactToastify.css';
 import ProfileUser from './pages/profile/ProfileUser';
 import Explore from './pages/explore/Explore';
+import AppProvider from './context/AppProvider';
 
 const App = () => {
   const routes = useRoutes([
@@ -110,12 +111,14 @@ const App = () => {
   ]);
 
   return (
-    <SuggestionsProvider>
+    <AppProvider>
+      <SuggestionsProvider>
       <>
         <ToastContainer />
         {routes}
       </>
     </SuggestionsProvider>
+    </AppProvider>
   );
 
 }

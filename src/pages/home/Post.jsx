@@ -20,8 +20,11 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { getFollowing } from '@/api/authApi/graph';
 import { SuggestionsContext } from './SuggestionsContext';
 import React from 'react';
+import { getAllPosts } from '@/api/authApi/post';
+import { AppContext } from '@/context/AppProvider';
 
 const Post = () => {
+    const { setIsLoading } = useContext(AppContext)
     const [icons, setIcons] = useState({});
     const [bookmark, setBookmark] = useState(false);
     const [showOptions, setShowOptions] = useState(false);
@@ -44,25 +47,35 @@ const Post = () => {
         const getPost = async () => {
             const id = localStorage.getItem('userId');
             try {
-                const posts = await newsFeed(id, limit);
-                // const followingUsers = await getFollowing(id);
-                // console.log("following", followingUsers);
+                setIsLoading(true);
+                let posts = { data : [] } ;
+                if( id != null )
+                {
+                    posts = await newsFeed(id, limit);
+                }
+                const explores = await getAllPosts(1,10);
 
                 console.log("newfeed", posts.data); // Đảm bảo post chứa dữ liệu đúng
-                if (posts.data.length > 0) {
-                    setPost(prev => page === 1 ? posts.data : [...prev, ...posts.data]);
-                    setTotal(posts.total);
-                    setHasMore(posts.data.length + post.length < posts.total);
+                const exploresList = explores.data;
+                console.log(exploresList);
 
-                }
-
+                setPost(prev => {
+                    const combinedData = [...exploresList, ...prev, ...posts.data];
+                    const uniqueData = combinedData.filter((value, index, self) => 
+                      index === self.findIndex((t) => t.id === value.id)
+                    );
+                    return uniqueData;
+                  });
+                  
+                setTotal(posts.total);
+                setHasMore(posts.data.length + post.length < posts.total);
+                setIsLoading(false);
             } catch (error) {
                 console.error("Lỗi khi lấy dữ liệu bài đăng", error);
             }
         }
         getPost();
     }, [page]);
-    console.log("post:", post)
 
 
     const inputRef = React.createRef();
@@ -77,12 +90,14 @@ const Post = () => {
         inputRef.current.focus();
     };
     useEffect(() => {
-        const getData = async () => {
-            const res = await getUserById(post.userId);
-            setUser(res.profile);
+        if ( post.userId )
+        {
+            const getData = async () => {
+                const res = await getUserById(post.userId);
+                setUser(res.profile);
+            }
+            getData();
         }
-
-        getData();
     }, [post.userId, isRender]);
 
     const handleSend = () => {
@@ -167,7 +182,7 @@ const Post = () => {
                         <div className="post-header">
                             <div className="post-header-left">
                                 <div className="post-header-avt">
-                                    <img src={user.avatarUrl || avt} alt="" />
+                                    <img src={item?.userAvartar || avt} alt="" />
                                 </div>
                             </div>
                             <div className="post-header-right">

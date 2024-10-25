@@ -1,11 +1,12 @@
 import { authInstance, publicInstance, request, requestWithToken } from "@/utils/axios-http/axios-http";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
 
 export const register = async (data) => {
   try {
     const { fullname, email, username, password, month, day, year, otp, avatarUrl } = data;
     const date = new Date(year, month - 1, day);
     const birthday = date.toISOString();
-
 
     await request(publicInstance, {
       data: {
@@ -84,7 +85,7 @@ export const login = async (data) => {
 
 export const getUserById = async (id) => {
   try {
-    const response = await requestWithToken(authInstance, {
+    const response = await request(authInstance, {
       method: "get",
       url: `/api/Users/get-user-by-userID?UserID=${id}`
     });
@@ -100,7 +101,7 @@ export const logout = async () => {
   try {
     const userId = localStorage.getItem("userId");
 
-    await requestWithToken(authInstance, {
+    await request(authInstance, {
       method: "post",
       url: `/api/Users/logout?Id=${userId}`
     });
@@ -108,6 +109,8 @@ export const logout = async () => {
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("accessToken");
     localStorage.removeItem("userId");
+    localStorage.removeItem("persist:user");
+    localStorage.removeItem("userLikes");
   } catch (error) {
     console.log(error);
     throw error;
@@ -147,7 +150,7 @@ export const editProfile = async (data) => {
   }
 };
 
-export const uploadAvatar = async (data, userId) => {
+export const uploadAvatar = async (data, userId,setNewAvatar) => {
   try {
     const formData = new FormData();
     formData.append('fileToUpload', data);
@@ -161,7 +164,7 @@ export const uploadAvatar = async (data, userId) => {
       method: "post",
       url: "/api/Users/upload-avatar"
     });
-
+    toast.success("Cập nhật ảnh đại diện thành công !")
     return response.data.value;
   } catch (error) {
     console.log(error);

@@ -68,7 +68,7 @@ const Menu = () => {
             <div className="menu">
                 <div className="menu-container">
                     <div className="menu-container-image">
-                        <img src={logoCapyGram} alt="" />
+                        <img style={{cursor:'pointer'}} onClick={() => navigate("/")} src={logoCapyGram} alt="" />
                     </div>
                     <div className="menu-container-content">
                         <ul>
@@ -103,12 +103,12 @@ const Menu = () => {
                                     <p>{t('text5')}</p>
                                 </div>
                             </li>
-                            <li>
+                            {/* <li>
                                 <div className={`list none ${location.pathname === '/notifications' ? 'active' : ''}`} onClick={() => navigate("/notifications")}>
                                     <i className="fa-regular fa-heart"></i>
                                     <p>{t('text6')}</p>
                                 </div>
-                            </li>
+                            </li> */}
                             <li>
                                 <div className="list" onClick={handleShowCreatePost}>
                                     <i className="fa-regular fa-square-plus"></i>
@@ -122,7 +122,9 @@ const Menu = () => {
                                 </div>
                             </li>
                             <li>
-                                <div className={`list none ${location.pathname === '/threads' ? 'active' : ''}`} onClick={() => navigate("/threads")}>
+                                <div className={`list none ${location.pathname === '/threads' ? 'active' : ''}`} onClick={
+                                    () => window.location.href = "https://www.threads.net"
+                                    }>
                                     <i className="fa-brands fa-threads"></i>
                                     <p>{t('text9')}</p>
                                 </div>

@@ -31,7 +31,7 @@ const ConfirmDeleteMessage = ({ onCancel, message, deleteMessage }) => {
         <div className='icon-top'><img style={{ cursor: 'pointer' }} src={exit} alt='close' onClick={onCancel} /></div>
       </div>
 
-      <div className='center-confirm'>
+      <div className='center-confirm' style={{height:'fit-content'}}>
         <div className='center-item'>
           <div className='btn-select' onClick={() => setSelected('everyone')}>
             <div

@@ -175,7 +175,7 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className='list-post'>
+        <div>
           {activeItem === 'post' && (
             <ListPost />
           )

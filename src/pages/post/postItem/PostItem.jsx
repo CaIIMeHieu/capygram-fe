@@ -28,6 +28,8 @@ const PostItem = ({ post, onCancel, setIscall }) => {
 
   const user = useSelector(state => state.user);
 
+  console.log(user)
+
   const addEmoji = (event, emojiObject) => {
     const emoji = event.emoji;
     const { selectionStart, selectionEnd } = inputRef.current;
@@ -42,10 +44,11 @@ const PostItem = ({ post, onCancel, setIscall }) => {
 
   useEffect(() => {
     const getComments = JSON.parse(localStorage.getItem('comments')) || [];
-
-    const postComments = getComments.filter(comment => comment.postId === post.id);
-
-    setComments(postComments);
+    if ( Object.keys(getComments).length != 0 )
+    {
+     const postComments = getComments?.filter(comment => comment.postId === post.id);
+     setComments(postComments);
+    }
     // console.log(post);
   }, [post.id]);
 
@@ -101,7 +104,7 @@ const PostItem = ({ post, onCancel, setIscall }) => {
         <div className='content-explore'>
           <div className='top-content-explore'>
             <div className='info-user'>
-              <img src={user.avatarUrl} className='avatar-info' />
+              <img src={user.avatarUrl != "" || "/src/assets/images/account.png"} className='avatar-info' />
               <p ><b>{user.username}</b></p>
             </div>
 
@@ -129,7 +132,7 @@ const PostItem = ({ post, onCancel, setIscall }) => {
               Array.isArray(comments) && comments.map((comment, index) => (
                 <div className='comment-item' key={index}>
                   <div className='info-user-comment'>
-                    <img src={user.avatarUrl} alt='avatar-info-user-comment' />
+                    <img src={user.avatarUrl || "/src/assets/images/account.png"} alt='avatar-info-user-comment' />
                   </div>
                   <div className='content-comment'>
                     <p><b>{user.username}</b></p>

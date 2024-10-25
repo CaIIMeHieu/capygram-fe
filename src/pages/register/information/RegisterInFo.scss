@@ -52,26 +52,29 @@
 
           &:placeholder-shown:not(:focus)+.placeholder {
             font-size: 14px;
-            top: 15px;
+            top: 18px;
+            left: 10px;
             transform: translateY(-50%);
           }
 
           &:not(:placeholder-shown),
           &:focus+.placeholder {
             font-size: 12px;
-            top: -15px;
-            padding: 0 5px;
+            //top: -8px;
+            //padding: 0 3px;
+            background-color: white;
           }
         }
 
         .placeholder {
           position: absolute;
           left: 15px;
-          top: -15px;
+          top: -10px;
           padding: 0 5px;
           transition: all 0.2s ease;
           font-size: 12px;
           color: #888;
+          background-color: white;
         }
 
         .form-error {
@@ -84,7 +87,7 @@
         .invalid-icon {
           position: absolute;
           right: 30px;
-          top: 5px;
+          top: 20px;
           transform: translateY(-50%);
           font-size: 18px;
           display: none;

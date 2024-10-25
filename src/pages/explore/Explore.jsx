@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { motion } from 'framer-motion';
 
@@ -10,6 +10,7 @@ import comment from '@/assets/images/comment.png';
 import './Explore.scss';
 import ExploreItem from './ExploreItem';
 import { getAllPosts } from '@/api/authApi/post';
+import { AppContext } from '@/context/AppProvider';
 
 const Explore = () => {
   const [exploreData, setExploreData] = useState([]);
@@ -20,10 +21,12 @@ const Explore = () => {
   const [hasMore, setHasMore] = useState(true);
   const [total, setTotal] = useState(0);
   const [limit, setLimit] = useState(16);
+  const { setIsLoading } = useContext(AppContext)
 
   useEffect(() => {
     const getPosts = async () => {
       try {
+        setIsLoading(true);
         const post = await getAllPosts(page, limit);
         // console.log("post:", post.data);
         if (post.data.length > 0) {
@@ -33,6 +36,7 @@ const Explore = () => {
         } else {
           setHasMore(false);
         }
+        setIsLoading(false);
       } catch (error) {
         console.log(error);
         setHasMore(false);
@@ -54,9 +58,6 @@ const Explore = () => {
     }
 
     setLimit(4);
-    // console.log("exploreData", exploreData);
-    // console.log("page", page);
-    // console.log("limit", limit);
   };
 
   const handleCancel = () => {

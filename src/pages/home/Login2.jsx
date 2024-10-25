@@ -48,7 +48,7 @@ const Login2 = () => {
             >
                 {({ handleSubmit, isSubmitting, touched, errors }) => (
                     <Form onSubmit={handleSubmit} className='Form' >
-                        <img src={logoCapyGram} alt="" />
+                        <img style={{cursor:'pointer'}} onClick={() => navigate("/")} src={logoCapyGram} alt="" />
                         <div className="form-input">
                             <Field className='field' name='username' type='text' placeholder="Số điện thoại, tên người dùng hoặc email." />
                         </div>
@@ -57,7 +57,10 @@ const Login2 = () => {
                             <i className={`eye-icon ${showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'}`} onClick={togglePasswordVisibility}></i>
                         </div>
                         <button className='form-button' type='submit'><b>Đăng nhập</b></button>
+                        <div style={{display:'flex',justifyContent:'space-around',marginTop:'-10px'}}>
+                        <p onClick={() => navigate("/ft/register")}>Đăng ký</p>
                         <p onClick={() => navigate("/ft/reset-password")}>Quên mật khẩu?</p>
+                        </div>
                     </Form>
                 )}
             </Formik>

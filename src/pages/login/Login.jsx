@@ -45,7 +45,7 @@ const Login = () => {
             {images.map((image, index) => (
               <li key={index} className={index === currentImageIndex ? 'active' : ''}>
                 <div className="content-img">
-                  <img src={image} alt={`Slide ${index}`} />
+                  <img  src={image} alt={`Slide ${index}`} />
                 </div>
               </li>
             ))}
@@ -83,7 +83,7 @@ const Login = () => {
             >
               {({ handleSubmit, isSubmitting, touched, errors }) => (
                 <Form onSubmit={handleSubmit} className='Form' >
-                  <img src={logoCapyGram} alt="" />
+                  <img style={{cursor:'pointer'}} onClick={() => navigate("/")} src={logoCapyGram} alt="" />
                   <div className="form-input">
                     <Field className='field' name='username' type='text' placeholder={t("placeholder")} />
                   </div>

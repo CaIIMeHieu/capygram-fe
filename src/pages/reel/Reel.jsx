@@ -1,15 +1,18 @@
 /* eslint-disable */
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useContext } from 'react'
 import './Reel.scss'
 import avt from '../../assets/images/account.png'
 import { motion } from 'framer-motion';
 import CommentReel from './CommentReel';
+import { AppContext } from '@/context/AppProvider';
 
 const Reel = () => {
+  const { setIsLoading } = useContext(AppContext)
   const [reel, setReel] = useState([]);
   const [showComment, setShowComment] = useState(false);
   const videoRefs = useRef([]);
   useEffect(() => {
+    setIsLoading(true);
     const fakeReel = async () => {
       const data = [
         { id: 1, username: 'nguyenhuy26_6', like: '23N', cmt: 320, cap: "Yummy!!!", img_url: avt, video_url: "https://videos.pexels.com/video-files/6138826/6138826-uhd_2560_1440_25fps.mp4" },
@@ -27,6 +30,7 @@ const Reel = () => {
         video.play();
       }
     });
+    setIsLoading(false);
   }, [reel]);
 
   const handleVideoClick = (index) => {

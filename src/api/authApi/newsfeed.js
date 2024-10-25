@@ -1,8 +1,8 @@
-import { newsFeedInstance, requestWithToken } from "@/utils/axios-http/axios-http";
+import { newsFeedInstance, request, requestWithToken } from "@/utils/axios-http/axios-http";
 
 export const newsFeed = async (id, limit) => {
   try {
-    const response = await requestWithToken(newsFeedInstance, {
+    const response = await request(newsFeedInstance, {
       method: "get",
       url: `/api/Newsfeeds/GetNewsfeed?id=${id}&limit=${limit}`
     });

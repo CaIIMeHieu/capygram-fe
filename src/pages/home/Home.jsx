@@ -10,12 +10,17 @@ import { motion } from 'framer-motion';
 import AccountTransfer from './AccountTransfer';
 import { useNavigate } from 'react-router-dom';
 import { getUserById } from '@/api/authApi/auth';
+import { Button } from 'antd';
+import ProgressBar from '@/components/ProgressBar/ProgressBar';
+import { AppContext } from '@/context/AppProvider';
 
 
 
 const Home = () => {
   const [showacctransfer, setshowacctransfer] = useState(false);
   const navigate = useNavigate();
+  const { setIsLoading } = useContext(AppContext)
+
   const { suggestions, setSuggestions, isFollow, handleFollowClick } = useContext(SuggestionsContext);
   const { hoveredItem, handleMouseEnter, handleMouseLeave } = useContext(SuggestionsContext);
   const { hoveredProfile, handleMouseProfileEnter, handleMouseProfileLeave } = useContext(SuggestionsContext);
@@ -24,6 +29,8 @@ const Home = () => {
   const { following, setFollowing } = useContext(SuggestionsContext);
   const [user, setUser] = useState({});
   const [profile, setProfile] = useState({});
+
+
   const handleshowacctransfer = () => {
     setshowacctransfer(true);
   };
@@ -34,18 +41,23 @@ const Home = () => {
     navigate(`/profile/${id}`);
   };
   useEffect(() => {
-    const getUser = async () => {
-      const userId = localStorage.getItem('userId');
-      const data = await getUserById(userId);
-      setUser(data);
-      setProfile(data.profile)
-      console.log('profile:', profile);
+    try {
+      const getUser = async () => {
+        const userId = localStorage.getItem('userId');
+        if ( userId )
+        {
+          const data = await getUserById(userId);
+          setUser(data);
+          setProfile(data.profile)
+        }        
+        console.log('profile:', profile);
+      };
+      getUser();
     }
-    getUser();
-
+    catch {
+      console.log('err');
+    }
   }, [])
-
-
 
   return (
     <div className='home' style={{ position: "absolute", left: "16%" }}>
@@ -53,12 +65,13 @@ const Home = () => {
         <div className="stories-posts">
           <div className="stories"></div>
           <div className="post-list">
-            <Post />
+            <Post/>
           </div>
         </div>
         <div className="account-suggestions">
           <div className="account">
-            <div className="account-container">
+            {
+              Object.keys(user).length != 0 ? <div className="account-container">
               <div className="account-left">
                 <div className="account-image">
                   <img src={profile.avatarUrl !== ('string' && '') ? profile.avatarUrl : avt} onClick={() => navigate("/profile")} alt="" />
@@ -74,9 +87,15 @@ const Home = () => {
                   <p onClick={handleshowacctransfer}>Chuyển</p>
                 </div>
               </div>
+            </div> : 
+            <div style={{display:'flex'}}>
+              <Button type='primary' onClick={() => navigate("/ft/register") }>Đăng ký</Button>
+              <Button style={{marginLeft:'10px'}} onClick={() => navigate("/ft/login") } >Đăng nhập</Button>
             </div>
+            }
           </div>
-          <div className="suggestions">
+          {
+            Object.keys(user).length != 0 && <div className="suggestions">
             <div className="suggestions-container">
               <div className="suggestions-header">
                 <p style={{ fontWeight: 'bold', color: 'gray' }}>Gợi ý cho bạn</p>
@@ -199,6 +218,7 @@ const Home = () => {
               </div>
             </div>
           </div>
+          }
         </div>
       </div>
       {showacctransfer && (

@@ -22,12 +22,13 @@ const ChangePhoto = ({ onCancel, handleRemovePhoto, setNewAvatar }) => {
     fileReader.onloadend = () => {
       const base64 = fileReader.result;
       setNewAvatar(base64);
-      dispatch(setUser({ avatarUrl: base64 }));
     };
     fileReader.readAsDataURL(fileToUpload);
     
     try {
-      await uploadAvatar(fileToUpload, localStorage.getItem('userId'));
+      var result = await uploadAvatar(fileToUpload, localStorage.getItem('userId'));
+      setNewAvatar(result.profile.avatarUrl);
+      dispatch(setUser({ avatarUrl: result.profile.avatarUrl }));
       onCancel();
     } catch (error) {
       console.log(error);

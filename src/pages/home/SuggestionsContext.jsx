@@ -22,20 +22,23 @@ export const SuggestionsProvider = ({ children }) => {
 
     const handleFollowClick = async (id) => {
         const userId = localStorage.getItem('userId');
-        if (isFollow[id]) {
-            // Unfollow
-            await unFollow(userId, id);
-            setIsFollow(prev => {
-                const updatedFollowStatus = { ...prev, [id]: false };
-                return updatedFollowStatus;
-            });
-        } else {
-            // Follow
-            await follow(userId, id);
-            setIsFollow(prev => {
-                const updatedFollowStatus = { ...prev, [id]: true };
-                return updatedFollowStatus;
-            });
+        if( userId )
+        {
+            if (isFollow[id]) {
+                // Unfollow
+                await unFollow(userId, id);
+                setIsFollow(prev => {
+                    const updatedFollowStatus = { ...prev, [id]: false };
+                    return updatedFollowStatus;
+                });
+            } else {
+                // Follow
+                await follow(userId, id);
+                setIsFollow(prev => {
+                    const updatedFollowStatus = { ...prev, [id]: true };
+                    return updatedFollowStatus;
+                });
+            }
         }
         setIsRender(!isRender);
     };
@@ -51,7 +54,9 @@ export const SuggestionsProvider = ({ children }) => {
     useEffect(() => {
         const fetchSuggestions = async () => {
             const userId = localStorage.getItem('userId');
-            const followingUsers = await getFollowing(userId);
+            if ( userId )
+            {
+                const followingUsers = await getFollowing(userId);
 
             const fetchFollowingUsers = async () => {
                 const allFollowingOfFollowing = [];
@@ -70,6 +75,7 @@ export const SuggestionsProvider = ({ children }) => {
                 .filter(user => user.id !== userId && !followingIds.has(user.id));
 
             setSuggestions(uniqueSuggestions);
+            }
         };
 
         fetchSuggestions();

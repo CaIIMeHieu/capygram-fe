@@ -1,10 +1,10 @@
-import { postInstance, requestWithToken } from "@/utils/axios-http/axios-http";
+import { postInstance, request, requestWithToken } from "@/utils/axios-http/axios-http";
 
 export const createPost = async (post, user) => {
   try {
     const formData = new FormData();
     const { ImageUrls, Likes, Content } = post;
-    const { UserName, UserId } = user;
+    const { UserName, UserId , UserAvartar } = user;
     ImageUrls.forEach((image) => {
       new File([], image)
       formData.append('ImageUrls', image);
@@ -13,6 +13,7 @@ export const createPost = async (post, user) => {
     formData.append('Content', Content);
     formData.append('UserName', UserName);
     formData.append('UserId', UserId);
+    formData.append('UserAvartar', UserAvartar);
 
     await requestWithToken(postInstance, {
       data: formData,
@@ -80,7 +81,7 @@ export const updatePost = async (post, user) => {
 
 export const getAllPosts = async (page, limit) => {
   try {
-    const response = await requestWithToken(postInstance, {
+    const response = await request(postInstance, {
       method: "get",
       url: `/api/Posts/GetAll?pageSize=${limit}&pageNumber=${page}`
     });
