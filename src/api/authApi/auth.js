@@ -165,6 +165,7 @@ export const uploadAvatar = async (data, userId,setNewAvatar) => {
       url: "/api/Users/upload-avatar"
     });
     toast.success("Cập nhật ảnh đại diện thành công !")
+    setNewAvatar(response.data.value.profile.avatarUrl);
     return response.data.value;
   } catch (error) {
     console.log(error);

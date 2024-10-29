@@ -26,9 +26,9 @@ const ChangePhoto = ({ onCancel, handleRemovePhoto, setNewAvatar }) => {
     fileReader.readAsDataURL(fileToUpload);
     
     try {
-      var result = await uploadAvatar(fileToUpload, localStorage.getItem('userId'));
-      setNewAvatar(result.profile.avatarUrl);
+      var result = await uploadAvatar(fileToUpload, localStorage.getItem('userId'),setNewAvatar);
       dispatch(setUser({ avatarUrl: result.profile.avatarUrl }));
+      setNewAvatar(result.profile.avatarUrl);
       onCancel();
     } catch (error) {
       console.log(error);
