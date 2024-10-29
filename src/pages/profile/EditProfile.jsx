@@ -21,7 +21,7 @@ const EditProfile = () => {
   const [toogle, setToogle] = useState("ON");
   const [avata, setAvata] = useState(true);
   const [showChangePhoto, setShowChangePhoto] = useState(false);
-  const [newAvatar, setNewAvatar] = useState(me.avatarUrl);
+  const [newAvatar, setNewAvatar] = useState("");
 
 
   const dispatch = useDispatch();
@@ -85,7 +85,7 @@ const EditProfile = () => {
         </p>
 
         <div className="group-profile">
-            <img src={newAvatar} alt="avata" />
+            <img src={newAvatar == "" ? me.avatarUrl : newAvatar} alt="avata" />
           <div className="name">
             <p className="p1">
               <b>{me.fullname !== "" ? me.fullname : "Hanglazy"}</b>
