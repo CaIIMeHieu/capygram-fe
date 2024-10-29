@@ -1,6 +1,7 @@
 import { AppContext } from '@/context/AppProvider'
 import { Button } from 'antd';
 import React, { useContext, useEffect } from 'react'
+import logoCapyGram from "../../assets/images/logoCapyGram.png"
 import { useNavigate } from 'react-router-dom';
 
 function RequireLogin() {
@@ -25,7 +26,7 @@ function RequireLogin() {
         <img style={{
             height:'100%',
             width:'100%'
-        }} src="/src/assets/images/logoCapyGram.png" alt=""/>
+        }} src={logoCapyGram} alt=""/>
         </div>
         <div style={{ flexGrow: 1 }}>
           <div style={{ fontWeight: 'bold',margin:'0 0 20px 0', fontSize: '28px' ,textAlign:'center' }}>Đăng nhập vào Capygram</div>
