@@ -81,27 +81,27 @@ const ProfileUser = () => {
   const hotStory = [
     {
       id: 1,
-      name: 'abc',
+      name: 'Stories',
       coverPhoto: cute
     },
     {
       id: 2,
-      name: 'abc',
+      name: 'Stories',
       coverPhoto: cute
     },
     {
       id: 3,
-      name: 'abc',
+      name: 'Stories',
       coverPhoto: cute
     },
     {
       id: 4,
-      name: 'abc',
+      name: 'Stories',
       coverPhoto: cute
     },
     {
       id: 5,
-      name: 'abc',
+      name: 'Stories',
       coverPhoto: cute
     }
 

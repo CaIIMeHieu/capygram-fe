@@ -1,4 +1,4 @@
-import { graphInstance, requestWithToken } from "@/utils/axios-http/axios-http";
+import { graphInstance, request, requestWithToken } from "@/utils/axios-http/axios-http";
 
 export const getFollowers = async (Id) => {
   try {
@@ -52,7 +52,7 @@ export const unFollow = async (id, did) => {
 
 export const getCountFollowing = async (Id) => {
   try {
-    const response = await requestWithToken(graphInstance, {
+    const response = await request(graphInstance, {
       method: "get",
       url: `/api/${Id}/following/count`
     });
@@ -65,7 +65,7 @@ export const getCountFollowing = async (Id) => {
 
 export const getCountFollower = async (Id) => {
   try {
-    const response = await requestWithToken(graphInstance, {
+    const response = await request(graphInstance, {
       method: "get",
       url: `/api/${Id}/follower/count`
     });

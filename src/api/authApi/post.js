@@ -32,7 +32,7 @@ export const createPost = async (post, user) => {
 
 export const getPostByUserId = async (userId) => {
   try {
-    const response = await requestWithToken(postInstance, {
+    const response = await request(postInstance, {
       method: "get",
       url: `/api/Posts/GetPostsByUserID?UserId=${userId}`
     });
