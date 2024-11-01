@@ -28,7 +28,7 @@ import ListFollowingUser from './ListFollowingUser';
 
 const ProfileUser = () => {
   const { id } = useParams();
-  const [activeItem, setActiveItem] = useState(null);
+  const [activeItem, setActiveItem] = useState("post");
   const [showOption, setShowOption] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const [user, setUser] = useState({});
@@ -38,12 +38,12 @@ const ProfileUser = () => {
   const [following, setFollowing] = useState(0);
   const [showListFollower, setShowListFollower] = useState(false);
   const [showListFollowing, setShowListFollowing] = useState(false);
+  const [isLogin,setIsLogin] = useState( localStorage.getItem("userId") );
 
   const { t } = useTranslation('profile');
 
   useEffect(() => {
     const getInfo = async () => {
-      // console.log(id);
       const user = await getUserById(id);
       setUser(user);
       const posts = await getPostByUserId(id);
@@ -134,17 +134,18 @@ const ProfileUser = () => {
           <div className='action'>
             <p className='name'><b>{user?.profile?.fullName}</b></p>
             <div className='group-btn'>
-              <button className='btn-action-1' onClick={() => setShowOption(true)}>
+              {
+                isLogin && <>
+                <button className='btn-action-1' onClick={() => setShowOption(true)}>
                 <p><b>{t('following')}</b></p>
                 <img src={down} alt='down' />
               </button>
               <button className='btn-action-2'>
                 <p><b>{t('message')}</b></p>
               </button>
-              <button className='btn-action-3'>
-                <img src={addFriend} alt='addFriend' />
-              </button>
               <img src={more} alt='more' onClick={() => setShowMore(true)} />
+                </>
+              }
             </div>
           </div>
 

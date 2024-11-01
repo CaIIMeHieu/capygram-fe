@@ -2,7 +2,7 @@ import { graphInstance, request, requestWithToken } from "@/utils/axios-http/axi
 
 export const getFollowers = async (Id) => {
   try {
-    const response = await requestWithToken(graphInstance, {
+    const response = await request(graphInstance, {
       method: "get",
       url: `/api/${Id}/follower`
     });
@@ -15,7 +15,7 @@ export const getFollowers = async (Id) => {
 
 export const getFollowing = async (Id) => {
   try {
-    const response = await requestWithToken(graphInstance, {
+    const response = await request(graphInstance, {
       method: "get",
       url: `/api/${Id}/following`
     });
@@ -28,7 +28,7 @@ export const getFollowing = async (Id) => {
 
 export const follow = async (id, did) => {
   try {
-    await requestWithToken(graphInstance, {
+    await request(graphInstance, {
       method: "post",
       url: `/api/${id}/follow/${did}`
     });
@@ -40,7 +40,7 @@ export const follow = async (id, did) => {
 
 export const unFollow = async (id, did) => {
   try {
-    await requestWithToken(graphInstance, {
+    await request(graphInstance, {
       method: "post",
       url: `/api/${id}/unfollow/${did}`
     });
