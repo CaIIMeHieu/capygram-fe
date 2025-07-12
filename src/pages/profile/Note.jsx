@@ -5,7 +5,7 @@ import "@/i18n";
 import EmojiPicker from 'emoji-picker-react';
 
 import exit from '@/assets/images/exit.png';
-import avataxinh from '@/assets/images/avataxinh.jpg';
+import avataxinh from '@/assets/images/avataxinh.gif';
 import icon from '@/assets/images/icon.png';
 import people from '@/assets/images/people.png';
 import { useDispatch, useSelector } from 'react-redux';
