@@ -13,7 +13,7 @@ import { getUserById } from '@/api/authApi/auth';
 import LayoutFooter from '@/layouts/LayoutFooter';
 import FollowUserOption from '@/components/followUserOption/FollowUserOption';
 import MoreOption from '@/components/followUserOption/MoreOption';
-import { getCountFollower, getCountFollowing } from '@/api/authApi/graph';
+import { follow, getCountFollower, getCountFollowing } from '@/api/authApi/graph';
 import { getPostByUserId } from '@/api/authApi/post';
 import PostInProfileUser from './PostInProfileUser';
 import ListFollowerUser from './ListFollowerUser';
@@ -39,11 +39,19 @@ const ProfileUser = () => {
   const [showListFollower, setShowListFollower] = useState(false);
   const [showListFollowing, setShowListFollowing] = useState(false);
   const [isLogin,setIsLogin] = useState( localStorage.getItem("userId") );
+  const [isFollowing, setIsFollowing] = useState(false);
 
   const { t } = useTranslation('profile');
 
   useEffect(() => {
     const getInfo = async () => {
+      const followers = await getFollowers(id);
+      const userId = localStorage.getItem("userId");
+      followers.forEach(element => {
+        if (element.id === userId) {
+          setIsFollowing(true);
+        }
+      });
       const user = await getUserById(id);
       setUser(user);
       const posts = await getPostByUserId(id);
@@ -135,7 +143,7 @@ const ProfileUser = () => {
             <p className='name'><b>{user?.profile?.fullName}</b></p>
             <div className='group-btn'>
               {
-                isLogin && <>
+                isLogin && isFollowing && <>
                 <button className='btn-action-1' onClick={() => setShowOption(true)}>
                 <p><b>{t('following')}</b></p>
                 <img src={down} alt='down' />
@@ -145,6 +153,22 @@ const ProfileUser = () => {
               </button>
               <img src={more} alt='more' onClick={() => setShowMore(true)} />
                 </>
+              }              
+            </div>
+            <div className='group-btn'>
+              {
+                isLogin && !isFollowing && 
+                ( <div>
+                <button className='btn-action-1' style={{
+                  backgroundColor: '#0095f6',
+                  color: '#fff',
+                }} onClick={ async () => {
+                  setIsFollowing(true)
+                  await follow(isLogin,id);
+                }}>
+                  <p><b>{t('follow')}</b></p>
+                  </button>
+                </div> )
               }
             </div>
           </div>
