@@ -199,7 +199,7 @@ const Post = () => {
                             </div>
                         </div>
                         {/* image */}
-                        <div className="post-image">
+                        <div className="post-image" onClick={() => handleShowComment(item)}>
                             <div className="i">
                                 <Carousel arrows infinite={false} >
                                     {item.imageUrls.map((imgSrc, imgId) => (

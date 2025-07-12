@@ -189,9 +189,8 @@
         .post-caption-time {
             font-size: 10px;
             color: #8e8e8e;
-            margin-bottom: 5px;
             text-transform: uppercase;
-            margin-top: 5px;
+            margin: 10px 0;
         }
 
         .post-caption-comment {
@@ -213,7 +212,7 @@
         border-top: 1px solid #efefef;
         color: #8e8e8e;
         max-height: 56px;
-        padding: 13px 0;
+        padding: 13px;
 
         form {
             display: flex;
