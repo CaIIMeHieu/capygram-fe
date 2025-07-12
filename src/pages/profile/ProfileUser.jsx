@@ -13,7 +13,7 @@ import { getUserById } from '@/api/authApi/auth';
 import LayoutFooter from '@/layouts/LayoutFooter';
 import FollowUserOption from '@/components/followUserOption/FollowUserOption';
 import MoreOption from '@/components/followUserOption/MoreOption';
-import { follow, getCountFollower, getCountFollowing } from '@/api/authApi/graph';
+import { follow, getCountFollower, getCountFollowing, getFollowers } from '@/api/authApi/graph';
 import { getPostByUserId } from '@/api/authApi/post';
 import PostInProfileUser from './PostInProfileUser';
 import ListFollowerUser from './ListFollowerUser';
