@@ -28,7 +28,7 @@ const ListFollowerUser = ({ Id, onCancel }) => {
   useEffect(() => {
     const getListFollowers = async () => {
       try {
-        const followers = await getFollowers(id);
+        const followers = await getFollowers(Id);
         let followingOfMe = [];
         if (isLogin) {
           followingOfMe = await getFollowing(localStorage.getItem("userId"));
