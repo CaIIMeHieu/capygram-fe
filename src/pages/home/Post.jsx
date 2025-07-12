@@ -61,11 +61,12 @@ const Post = () => {
 
                 setPost(prev => {
                     const combinedData = [...exploresList, ...prev, ...posts.data];
-                    const uniqueData = combinedData.filter((value, index, self) => 
-                      index === self.findIndex((t) => t.id === value.id)
-                    );
-                    return uniqueData;
-                  });
+                    return combinedData
+                        .filter((value, index, self) => 
+                            index === self.findIndex((t) => t.id === value.id)
+                        )
+                        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                });
                   
                 setTotal(posts.total);
                 setHasMore(posts.data.length + post.length < posts.total);
