@@ -164,6 +164,7 @@ const ProfileUser = () => {
                   color: '#fff',
                 }} onClick={ async () => {
                   setIsFollowing(true)
+                  setFollower(follower + 1);
                   await follow(isLogin,id);
                 }}>
                   <p><b>{t('follow')}</b></p>
